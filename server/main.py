@@ -4,6 +4,7 @@ from services.search_service import SearchService
 from services.sort_source_service import SortSourceService
 from services.llm_service import LLMService
 import asyncio
+from starlette.websockets import WebSocketState
 
 app = FastAPI()
 
@@ -34,7 +35,8 @@ async def websocket_chat_endpoint(websocket: WebSocket):
     except:
         print("Unexpect Things Happens In Life!")
     finally:
-        await websocket.close()
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close()
 
 @app.get("/")
 def printmannuchut():

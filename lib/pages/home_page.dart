@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:perplexity_clone_beta/services/chat_web_service.dart';
 import 'package:perplexity_clone_beta/theme/colors.dart';
@@ -12,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String fullResponse = "";
   @override
   void initState() {
     super.initState();
@@ -25,22 +25,12 @@ class _HomePageState extends State<HomePage> {
       body: Row(
         children: [
           // siderbar
-          SideBar(),
+          kIsWeb ? SideBar() : SizedBox(),
           Expanded(
             child: Column(
               children: [
                 // search box
                 Expanded(child: SearchSection()),
-                StreamBuilder(
-                  stream: ChatWebService().contentStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    fullResponse += snapshot.data?['data'] ?? '';
-                    return Text(fullResponse);
-                  },
-                ),
                 // footer
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 16),
