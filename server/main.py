@@ -30,7 +30,7 @@ async def websocket_chat_endpoint(websocket: WebSocket):
         # generate the response using LLM
         for chunk in llm_service.generate_response(query,sorted_results):
             await asyncio.sleep(0.1)
-            websocket.send_json({'type':'content','data':chunk})
+            await websocket.send_json({'type':'content','data':chunk})
     except:
         print("Unexpect Things Happens In Life!")
     finally:
